@@ -127,6 +127,15 @@ namespace Cysharp.Collections
             return new UnmanagedMemoryStream(buffer + offset * Unsafe.SizeOf<T>(), length * Unsafe.SizeOf<T>());
         }
 
+
+        public Stream AsStream(long offset, long _length)
+        {
+            if ((ulong)offset > (ulong)length) ThrowHelper.ThrowArgumentOutOfRangeException(nameof(offset));
+            if (offset + _length > length) ThrowHelper.ThrowArgumentOutOfRangeException(nameof(_length));
+
+            return new UnmanagedMemoryStream(buffer + offset * Unsafe.SizeOf<T>(), _length * Unsafe.SizeOf<T>());
+        }
+
         public Stream AsStream(FileAccess fileAccess)
         {
             var len = length * Unsafe.SizeOf<T>();
